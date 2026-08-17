@@ -1,0 +1,559 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// User & Authentication Models
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  role         String    // SUPER_ADMIN, PLACEMENT_OFFICER, DEPARTMENT_COORDINATOR, STUDENT, RECRUITER, MANAGEMENT
+  avatarUrl    String?
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  student      Student?
+  recruiter    Recruiter?
+  auditLogs    AuditLog[]
+  notifications Notification[]
+}
+
+model Department {
+  id          String    @id @default(uuid())
+  code        String    @unique // e.g. CSE, ECE, ME, IT, CE
+  name        String
+  description String?
+  createdAt   DateTime  @default(now())
+
+  programs    Program[]
+  students    Student[]
+}
+
+model Program {
+  id            String      @id @default(uuid())
+  name          String      // e.g. B.Tech Computer Science & Engineering
+  degreeType    String      // B.Tech, M.Tech, MCA, MBA
+  durationYears Int         @default(4)
+  departmentId  String
+  department    Department  @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  students      Student[]
+  createdAt     DateTime    @default(now())
+}
+
+model Batch {
+  id             String    @id @default(uuid())
+  name           String    // e.g. Batch 2023-2027
+  graduationYear Int       // 2027
+  academicYear   String    // 2026-2027
+  students       Student[]
+  createdAt      DateTime  @default(now())
+}
+
+// Student Models
+model Student {
+  id                String       @id @default(uuid())
+  userId            String       @unique
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rollNumber        String       @unique
+  departmentId      String
+  department        Department   @relation(fields: [departmentId], references: [id])
+  programId         String
+  program           Program      @relation(fields: [programId], references: [id])
+  batchId           String
+  batch             Batch        @relation(fields: [batchId], references: [id])
+  
+  phone             String?
+  dob               String?
+  gender            String?      // Male, Female, Other
+  address           String?
+  photoUrl          String?
+  isVerified        Boolean      @default(false)
+  verificationNotes String?
+  profileCompletion Int          @default(0) // 0 - 100%
+  placementStatus   String       @default("UNPLACED") // UNPLACED, IN_PROCESS, PLACED, OPTED_OUT
+  resumeSummary     String?
+  linkedinUrl       String?
+  githubUrl         String?
+  portfolioUrl      String?
+
+  academicRecord    AcademicRecord?
+  skills            StudentSkill[]
+  certifications    Certification[]
+  projects          Project[]
+  internships       Internship[]
+  resumes           Resume[]
+  applications      Application[]
+  overrides         EligibilityOverride[]
+  driveParticipants DriveParticipant[]
+  testResults       TestResult[]
+  interviews        Interview[]
+  selections        Selection[]
+  offers            Offer[]
+  joiningRecords    JoiningRecord[]
+
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+}
+
+model AcademicRecord {
+  id                String   @id @default(uuid())
+  studentId         String   @unique
+  student           Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  cgpa              Float    @default(0.0)
+  tenthPercentage   Float    @default(0.0)
+  twelfthPercentage Float?
+  diplomaPercentage Float?
+  activeBacklogs    Int      @default(0)
+  historyBacklogs   Int      @default(0)
+  semesterWiseMarks String?  // JSON string e.g. [{"sem":1,"sgpa":8.5},{"sem":2,"sgpa":8.8}]
+  gapYears          Int      @default(0)
+  isVerified        Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Skill {
+  id        String         @id @default(uuid())
+  name      String         @unique
+  category  String         @default("General") // Programming, Cloud, AI/ML, Core, Soft Skills
+  students  StudentSkill[]
+}
+
+model StudentSkill {
+  id         String   @id @default(uuid())
+  studentId  String
+  student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  skillId    String
+  skill      Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  level      String   @default("Intermediate") // Beginner, Intermediate, Advanced, Expert
+  
+  @@unique([studentId, skillId])
+}
+
+model Certification {
+  id            String   @id @default(uuid())
+  studentId     String
+  student       Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  name          String
+  issuingOrg    String
+  issueDate     String?
+  expiryDate    String?
+  credentialId  String?
+  credentialUrl String?
+  createdAt     DateTime @default(now())
+}
+
+model Project {
+  id           String   @id @default(uuid())
+  studentId    String
+  student      Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  title        String
+  description  String
+  technologies String?  // comma-separated or JSON
+  projectUrl   String?
+  githubUrl    String?
+  startDate    String?
+  endDate      String?
+  createdAt    DateTime @default(now())
+}
+
+model Internship {
+  id             String   @id @default(uuid())
+  studentId      String
+  student        Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  companyName    String
+  role           String
+  description    String
+  location       String?
+  startDate      String?
+  endDate        String?
+  stipend        String?
+  certificateUrl String?
+  createdAt      DateTime @default(now())
+}
+
+model Resume {
+  id           String        @id @default(uuid())
+  studentId    String
+  student      Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  title        String
+  fileName     String
+  fileUrl      String
+  fileSize     Int           @default(0) // in bytes
+  mimeType     String        @default("application/pdf")
+  isDefault    Boolean       @default(false)
+  applications Application[]
+  createdAt    DateTime      @default(now())
+}
+
+// Company & Recruiter Models
+model Company {
+  id            String           @id @default(uuid())
+  name          String           @unique
+  slug          String           @unique
+  logoUrl       String?
+  website       String?
+  industry      String           // IT, Core Engineering, Finance, Consulting, Healthcare
+  companyType   String           @default("PRODUCT") // PRODUCT, SERVICE, STARTUP, MNC, PSU
+  tier          String           @default("TIER_1") // TIER_1 (Super Dream), TIER_2 (Dream), TIER_3 (Mass/Regular)
+  hqAddress     String?
+  description   String?
+  status        String           @default("APPROVED") // PROSPECT, REGISTERED, UNDER_REVIEW, APPROVED, REJECTED, SUSPENDED, INACTIVE
+  approvalNotes String?
+  recruiters    Recruiter[]
+  jobs          Job[]
+  drives        PlacementDrive[]
+  offers        Offer[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
+model Recruiter {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId   String
+  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  designation String?  // HR Manager, Lead Technical Recruiter, Talent Acquisition Specialist
+  phone       String?
+  isPrimary   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+// Job & Eligibility Rule Models
+model Job {
+  id               String              @id @default(uuid())
+  companyId        String
+  company          Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  title            String              // Software Engineer, Data Analyst, Cloud DevOps Engineer
+  role             String
+  description      String
+  requirements     String?
+  jobType          String              @default("FULL_TIME") // FULL_TIME, INTERNSHIP_TO_PPO, INTERNSHIP
+  workMode         String              @default("HYBRID") // ON_SITE, REMOTE, HYBRID
+  location         String              @default("Bangalore / Hyderabad")
+  ctcLPA           Float               // Total package in LPA e.g. 18.5
+  baseSalaryLPA    Float?              // Base component in LPA
+  variableSalaryLPA Float?             // Variable component
+  vacancies        Int                 @default(5)
+  deadline         DateTime
+  status           String              @default("PUBLISHED") // DRAFT, UNDER_REVIEW, APPROVED, PUBLISHED, CLOSED, CANCELLED, ARCHIVED
+  createdById      String?
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  eligibilityRule  JobEligibilityRule?
+  applications     Application[]
+  overrides        EligibilityOverride[]
+  drives           PlacementDrive[]
+  tests            Test[]
+  interviews       Interview[]
+  selections       Selection[]
+  offers           Offer[]
+}
+
+model JobEligibilityRule {
+  id                     String   @id @default(uuid())
+  jobId                  String   @unique
+  job                    Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  minCGPA                Float    @default(6.0)
+  allowedDepartmentCodes String   // comma-separated JSON string e.g. ["CSE", "IT", "ECE"]
+  allowedBatchYears      String   // comma-separated JSON string e.g. ["2026", "2027"]
+  maxActiveBacklogs      Int      @default(0)
+  maxHistoryBacklogs     Int      @default(2)
+  minTenthPercentage     Float    @default(60.0)
+  minTwelfthPercentage   Float    @default(60.0)
+  requiredSkills         String?  // comma-separated JSON string e.g. ["Java", "Python", "SQL"]
+  customNotes            String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+// Application & Workflow Models
+model Application {
+  id            String                     @id @default(uuid())
+  studentId     String
+  student       Student                    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  jobId         String
+  job           Job                        @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  resumeId      String?
+  resume        Resume?                    @relation(fields: [resumeId], references: [id])
+  currentStage  String                     @default("APPLIED") // APPLIED, SHORTLISTED, TEST, INTERVIEW, SELECTED, OFFERED, JOINED, REJECTED, WITHDRAWN
+  status        String                     @default("ACTIVE") // ACTIVE, REJECTED, WITHDRAWN, ACCEPTED
+  notes         String?
+  appliedAt     DateTime                   @default(now())
+  updatedAt     DateTime                   @updatedAt
+
+  statusHistory ApplicationStatusHistory[]
+  selections    Selection[]
+
+  @@unique([studentId, jobId])
+}
+
+model ApplicationStatusHistory {
+  id            String      @id @default(uuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  fromStage     String
+  toStage       String
+  changedById   String?
+  changeReason  String?
+  createdAt     DateTime    @default(now())
+}
+
+model EligibilityOverride {
+  id             String   @id @default(uuid())
+  studentId      String
+  student        Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  jobId          String
+  job            Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  overriddenById String
+  previousResult String   // JSON explanation
+  newResult      String   // OVERRIDDEN_ELIGIBLE
+  reason         String
+  createdAt      DateTime @default(now())
+
+  @@unique([studentId, jobId])
+}
+
+// Drives, Tests & Interview Models
+model PlacementDrive {
+  id           String             @id @default(uuid())
+  jobId        String
+  job          Job                @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  companyId    String
+  company      Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  title        String             // e.g. Google Campus Hiring Drive 2026-27
+  driveDate    DateTime
+  venue        String             @default("Main Auditorium / Virtual")
+  isOnline     Boolean            @default(false)
+  meetLink     String?
+  stages       String             @default("Online Assessment, Technical Interview, HR Round")
+  status       String             @default("UPCOMING") // UPCOMING, ONGOING, COMPLETED, CANCELLED
+  instructions String?
+  createdById  String?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  participants DriveParticipant[]
+  tests        Test[]
+  interviews   Interview[]
+}
+
+model DriveParticipant {
+  id               String         @id @default(uuid())
+  driveId          String
+  drive            PlacementDrive @relation(fields: [driveId], references: [id], onDelete: Cascade)
+  studentId        String
+  student          Student        @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  attendanceStatus String         @default("REGISTERED") // REGISTERED, PRESENT, ABSENT
+  currentRound     String         @default("ROUND_1")
+  remarks          String?
+  createdAt        DateTime       @default(now())
+
+  @@unique([driveId, studentId])
+}
+
+model Test {
+  id              String       @id @default(uuid())
+  driveId         String?
+  drive           PlacementDrive? @relation(fields: [driveId], references: [id], onDelete: SetNull)
+  jobId           String
+  job             Job          @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  title           String       // Coding & Aptitude Test Round 1
+  testType        String       @default("ONLINE_CODING") // ONLINE_CODING, APTITUDE, TECHNICAL_MCQ, PSYCHOMETRIC
+  platform        String       @default("HackerRank") // HackerRank, Mettle, CoCubes, Internal
+  scheduledAt     DateTime
+  durationMinutes Int          @default(90)
+  maxMarks        Int          @default(100)
+  instructions    String?
+  results         TestResult[]
+  createdAt       DateTime     @default(now())
+}
+
+model TestResult {
+  id         String   @id @default(uuid())
+  testId     String
+  test       Test     @relation(fields: [testId], references: [id], onDelete: Cascade)
+  studentId  String
+  student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  score      Float    @default(0.0)
+  percentile Float?
+  status     String   @default("PASSED") // PASSED, FAILED, ABSENT, UNDER_EVALUATION
+  remarks    String?
+  createdAt  DateTime @default(now())
+
+  @@unique([testId, studentId])
+}
+
+model Interview {
+  id              String             @id @default(uuid())
+  driveId         String?
+  drive           PlacementDrive?    @relation(fields: [driveId], references: [id], onDelete: SetNull)
+  jobId           String
+  job             Job                @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  studentId       String
+  student         Student            @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  roundNumber     Int                @default(1)
+  roundName       String             // Technical Round 1, System Design, HR Discussion
+  interviewerName String             @default("Senior Technical Lead")
+  scheduledStart  DateTime
+  scheduledEnd    DateTime
+  venue           String             @default("Virtual Google Meet")
+  meetLink        String?
+  status          String             @default("SCHEDULED") // SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED, NO_SHOW
+  notes           String?
+  createdAt       DateTime           @default(now())
+
+  feedbacks       InterviewFeedback[]
+}
+
+model InterviewFeedback {
+  id                    String    @id @default(uuid())
+  interviewId           String
+  interview             Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+  interviewerId         String?
+  technicalRating       Int       @default(4) // 1 - 5
+  communicationRating   Int       @default(4) // 1 - 5
+  problemSolvingRating  Int       @default(4) // 1 - 5
+  overallScore          Float     @default(8.0) // 1 - 10
+  recommendation        String    @default("SELECT") // ADVANCE, SELECT, REJECT, ON_HOLD
+  strengths             String?
+  weaknesses            String?
+  remarks               String?
+  createdAt             DateTime  @default(now())
+}
+
+// Selection & Offer Models
+model Selection {
+  id            String       @id @default(uuid())
+  jobId         String
+  job           Job          @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  studentId     String
+  student       Student      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  applicationId String?
+  application   Application? @relation(fields: [applicationId], references: [id])
+  status        String       @default("SELECTED") // SELECTED, WAITLISTED, ON_HOLD, REJECTED
+  remarks       String?
+  selectedAt    DateTime     @default(now())
+  createdAt     DateTime     @default(now())
+
+  offers        Offer[]
+
+  @@unique([jobId, studentId])
+}
+
+model Offer {
+  id                 String          @id @default(uuid())
+  selectionId        String?
+  selection          Selection?      @relation(fields: [selectionId], references: [id], onDelete: SetNull)
+  studentId          String
+  student            Student         @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  jobId              String
+  job                Job             @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  companyId          String
+  company            Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  offerLetterNumber  String          @unique
+  ctcLPA             Float           // In Lakhs per Annum e.g. 18.5
+  baseSalary         Float?
+  variableSalary     Float?
+  joiningDate        DateTime?
+  offerDate          DateTime        @default(now())
+  expiryDate         DateTime?
+  documentUrl        String?
+  status             String          @default("ISSUED") // ISSUED, ACCEPTED, REJECTED, EXPIRED, REVOKED
+  studentResponseAt  DateTime?
+  studentRemarks     String?
+  joiningRecord      JoiningRecord?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+}
+
+model MultipleOfferPolicy {
+  id                             String   @id @default(uuid())
+  name                           String   @default("Standard Dream Offer Policy")
+  allowMultipleApplications      Boolean  @default(true)
+  allowMultipleOffers            Boolean  @default(true)
+  stopAfterAcceptedOffer         Boolean  @default(true)
+  minCtcMultiplierForSecondOffer Float    @default(1.5) // Student needs 1.5x CTC of current offer to apply for 2nd offer
+  minAbsoluteCtcForSecondOffer   Float    @default(12.0) // Or min 12 LPA for Super Dream
+  maxOffersAllowed               Int      @default(2)
+  isActive                       Boolean  @default(true)
+  createdAt                      DateTime @default(now())
+}
+
+model JoiningRecord {
+  id                String    @id @default(uuid())
+  offerId           String    @unique
+  offer             Offer     @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  studentId         String
+  student           Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  status            String    @default("EXPECTED") // EXPECTED, JOINED, DEFERRED, CANCELLED, NOT_JOINED
+  actualJoiningDate DateTime?
+  location          String?
+  verificationNotes String?
+  verifiedById      String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+// Communication & Governance Models
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String   @default("INFO") // INFO, SUCCESS, WARNING, URGENT, OFFER, INTERVIEW
+  isRead    Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+}
+
+model Announcement {
+  id                String    @id @default(uuid())
+  title             String
+  content           String
+  priority          String    @default("NORMAL") // NORMAL, IMPORTANT, URGENT
+  targetDepartments String?   // JSON array e.g. ["CSE", "IT"] or null for all
+  targetBatches     String?   // JSON array e.g. ["2027"] or null for all
+  expiresAt         DateTime?
+  createdById       String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model AuditLog {
+  id            String   @id @default(uuid())
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userEmail     String?
+  userRole      String?
+  action        String   // APPLICATION_OVERRIDE, STATUS_CHANGE, OFFER_ISSUED, OFFER_ACCEPTED, SELECTION_CREATED, USER_LOGIN, etc.
+  entityType    String   // Application, Offer, Selection, Student, Job, Interview
+  entityId      String?
+  previousState String?  // JSON string
+  newState      String?  // JSON string
+  ipAddress     String?  @default("127.0.0.1")
+  userAgent     String?
+  createdAt     DateTime @default(now())
+}
+
+model InstitutionSetting {
+  id                   String   @id @default(uuid())
+  institutionName      String   @default("National Institute of Technology & Management")
+  logoUrl              String?
+  currentAcademicYear  String   @default("2026-2027")
+  resumeMaxSizeMB      Int      @default(5)
+  allowedMimeTypes     String   @default("[\"application/pdf\", \"application/msword\", \"application/vnd.openxmlformats-officedocument.wordprocessingml.document\"]")
+  profileWeights       String   @default("{\"personal\":20,\"academic\":25,\"skills\":15,\"projects\":15,\"resume\":15,\"certifications\":10}")
+  placementPolicies    String   @default("{\"allowMultipleOffers\":true,\"stopAfterAccepted\":true,\"dreamCtcThreshold\":12.0}")
+  updatedAt            DateTime @updatedAt
+}
