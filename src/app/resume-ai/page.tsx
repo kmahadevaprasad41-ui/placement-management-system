@@ -118,17 +118,53 @@ export default function ResumeAIPage() {
   };
 
   const handleEnhanceBullet = () => {
-    if (!draftBullet.trim()) return;
+    const text = draftBullet.trim();
+    if (!text) {
+      toast.error("Input Required", "Please enter or select a draft bullet point to enhance.");
+      return;
+    }
+
     setIsEnhancing(true);
     setTimeout(() => {
       setIsEnhancing(false);
-      setEnhancedBullets([
-        `Engineered scalable backend service utilizing ${draftBullet.slice(0, 30)}... resulting in 40% reduction in processing overhead.`,
-        `Streamlined core data workflows with automated pipelines, achieving 99.9% uptime across production workloads.`,
-        `Optimized performance and API response metrics by 35% through query indexing and intelligent in-memory caching.`,
-      ]);
-      toast.success("AI Enhancements Generated", "3 quantified, metric-driven bullet points created.");
-    }, 700);
+      const lower = text.toLowerCase();
+      let variations: string[] = [];
+
+      if (lower.includes("api") || lower.includes("node") || lower.includes("backend") || lower.includes("server")) {
+        variations = [
+          `Architected high-throughput RESTful microservices and backend infrastructure handling 50,000+ daily requests, decreasing p99 server response latency by 38%.`,
+          `Engineered distributed caching & connection pooling layers using Redis and Node.js, reducing server response times from 420ms to 160ms (62% performance boost).`,
+          `Spearheaded modular backend service architecture, implementing JWT authentication and rate limiting to support 5,000+ concurrent active sessions with 99.99% uptime.`,
+        ];
+      } else if (lower.includes("react") || lower.includes("frontend") || lower.includes("ui") || lower.includes("css")) {
+        variations = [
+          `Engineered high-performance responsive web interfaces in React/TypeScript, reducing First Contentful Paint (FCP) by 45% and boosting Lighthouse performance score to 98/100.`,
+          `Architected modular, reusable UI design system component library, accelerating feature development velocity by 30% across cross-functional engineering teams.`,
+          `Implemented client-side state management and optimistic UI updates, decreasing perceived page load latency by 40% for 10,000+ monthly active users.`,
+        ];
+      } else if (lower.includes("database") || lower.includes("sql") || lower.includes("postgres") || lower.includes("data")) {
+        variations = [
+          `Optimized complex multi-table SQL queries and database index structures, reducing execution bottlenecks from 650ms to 120ms (81% query speedup).`,
+          `Architected scalable relational schemas with PostgreSQL connection pooling, handling 15,000+ transactions/sec while maintaining ACID compliance.`,
+          `Automated database replication and continuous backup pipelines, ensuring zero data loss and achieving 99.99% high availability.`,
+        ];
+      } else if (lower.includes("ml") || lower.includes("ai") || lower.includes("model") || lower.includes("python")) {
+        variations = [
+          `Trained and fine-tuned predictive machine learning pipelines in Python/PyTorch, boosting model classification accuracy to 94.8% on cross-validation benchmarks.`,
+          `Deployed containerized AI inference microservices with Docker and FastAPI, cutting end-to-end model prediction latency by 55%.`,
+          `Automated end-to-end feature extraction and data preprocessing workflows, reducing manual pipeline processing time by 15+ engineering hours per week.`,
+        ];
+      } else {
+        variations = [
+          `Spearheaded ${text.replace(/\.$/, "")}, decreasing processing overhead by 40% and cutting deployment turnaround time from 3 days to 4 hours.`,
+          `Engineered scalable automated workflows for ${text.replace(/\.$/, "")}, achieving 99.9% reliability and driving measurable operational efficiency gains.`,
+          `Architected high-impact technical solution around ${text.replace(/\.$/, "")}, enhancing throughput by 35% across production workloads.`,
+        ];
+      }
+
+      setEnhancedBullets(variations);
+      toast.success("AI Enhancements Generated", "3 quantified, metric-driven bullet points created!");
+    }, 500);
   };
 
   const handleCopyBullet = (text: string, index: number) => {
@@ -349,14 +385,39 @@ export default function ResumeAIPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                  Your Draft Bullet Point
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                    Your Draft Bullet Point
+                  </label>
+                  <span className="text-[10px] text-slate-400">Click a preset or type custom text:</span>
+                </div>
+
+                {/* Preset Chips */}
+                <div className="flex flex-wrap gap-1.5 pb-1">
+                  {[
+                    "Built a backend API in Node.js for managing users and reduced server response times.",
+                    "Created responsive user interface using React and TailwindCSS with dark mode.",
+                    "Optimized SQL queries and database indexes to speed up transaction processing.",
+                    "Trained machine learning classification model in Python to predict student placements.",
+                  ].map((preset, pIdx) => (
+                    <button
+                      key={pIdx}
+                      type="button"
+                      onClick={() => {
+                        setDraftBullet(preset);
+                      }}
+                      className="px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-slate-100 hover:bg-purple-100 hover:text-purple-700 text-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-purple-950/60 dark:hover:text-purple-300 transition-colors"
+                    >
+                      {preset.split(" ").slice(0, 4).join(" ")}...
+                    </button>
+                  ))}
+                </div>
+
                 <textarea
                   rows={2}
                   value={draftBullet}
                   onChange={(e) => setDraftBullet(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100"
                   placeholder="Paste any bullet point from your resume here..."
                 />
               </div>
