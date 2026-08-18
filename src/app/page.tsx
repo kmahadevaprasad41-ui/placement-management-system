@@ -30,6 +30,8 @@ import { Hero3DScene } from "@/components/3d/hero-3d-scene";
 import { PlacementMarquee } from "@/components/animated/placement-marquee";
 import { ParticlesCanvas } from "@/components/3d/particles-canvas";
 import { Orbital3DRings } from "@/components/3d/orbital-3d-rings";
+import { Floating3DShapes } from "@/components/3d/floating-3d-shapes";
+import { Interactive3DFlipCard } from "@/components/3d/interactive-3d-flip-card";
 import { FloatingMascotOrb } from "@/components/animated/floating-mascot-orb";
 
 export default function LandingPage() {
@@ -124,8 +126,9 @@ export default function LandingPage() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-900 dark:text-slate-100 flex flex-col justify-between overflow-x-hidden selection:bg-blue-600 selection:text-white">
-      {/* Interactive Background Particle Mesh */}
+      {/* Interactive Background Particle Mesh & 3D Wireframe Polyhedrons */}
       <ParticlesCanvas />
+      <Floating3DShapes />
 
       {/* 3D Dynamic Ambient Glow */}
       <div className="fixed inset-0 pointer-events-none z-0">
@@ -272,46 +275,88 @@ export default function LandingPage() {
         {/* 3D Orbital Revolving Gyro Rings */}
         <Orbital3DRings />
 
-        {/* 4 Pillars Feature Cards with 3D Elevate */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <div className="rounded-2xl border border-slate-200/80 bg-white/80 backdrop-blur-sm p-5 shadow-sm hover:shadow-xl transition-all card-3d-lift dark:border-slate-800 dark:bg-slate-900/80 group">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <ShieldCheck className="w-5 h-5" />
+        {/* 4 Core Pillars with 3D True Perspective Flip Interaction */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                <span>Core Platform Engines</span>
+                <Badge variant="purple" size="sm">3D Interactive Flip</Badge>
+              </h3>
+              <p className="text-xs text-slate-500">
+                Click any engine card to flip in 3D and inspect underlying algorithms
+              </p>
             </div>
-            <h3 className="text-sm font-extrabold text-slate-900 dark:text-slate-100">Eligibility Engine</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
-              Rule breakdowns with transparent green checkmarks & officer override workflow.
-            </p>
           </div>
 
-          <div className="rounded-2xl border border-slate-200/80 bg-white/80 backdrop-blur-sm p-5 shadow-sm hover:shadow-xl transition-all card-3d-lift dark:border-slate-800 dark:bg-slate-900/80 group">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <Layers className="w-5 h-5" />
-            </div>
-            <h3 className="text-sm font-extrabold text-slate-900 dark:text-slate-100">8-Stage Kanban</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
-              Applied → Shortlist → Test → Interview → Selected → Offered → Accepted → Joined.
-            </p>
-          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <Interactive3DFlipCard
+              frontBadge="Engine 1"
+              frontTitle="Eligibility Rule Engine"
+              frontSubtitle="Transparent multi-variable criteria evaluator with instant pass/fail checklists."
+              frontMetrics={[
+                { label: "Cutoff Match", value: "CGPA & 10/12th" },
+                { label: "Exemption", value: "Officer Override" },
+              ]}
+              backTitle="Transparent Evaluation"
+              backDescription="Evaluates student eligibility across 6 academic parameters before application submission."
+              backPoints={[
+                "Verifies allowed engineering departments",
+                "Checks active and historical backlog limits",
+                "Permits placement officer overrides with audit logs",
+              ]}
+            />
 
-          <div className="rounded-2xl border border-slate-200/80 bg-white/80 backdrop-blur-sm p-5 shadow-sm hover:shadow-xl transition-all card-3d-lift dark:border-slate-800 dark:bg-slate-900/80 group">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <Calendar className="w-5 h-5" />
-            </div>
-            <h3 className="text-sm font-extrabold text-slate-900 dark:text-slate-100">Conflict Detector</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
-              Prevents double-booking across simultaneous interview slots and tests.
-            </p>
-          </div>
+            <Interactive3DFlipCard
+              frontBadge="Engine 2"
+              frontTitle="8-Stage Kanban Flow"
+              frontSubtitle="Visual candidate progression tracking from initial application to date of joining."
+              frontMetrics={[
+                { label: "Pipeline", value: "8 Stages" },
+                { label: "Status", value: "Live Drag & Drop" },
+              ]}
+              backTitle="Automated Transitions"
+              backDescription="Recruiters and placement officers manage candidates with real-time status triggers."
+              backPoints={[
+                "Applied → Shortlist → Test → Interview",
+                "Selected → Offered → Accepted → Joined",
+                "Automated email & in-app notification dispatches",
+              ]}
+            />
 
-          <div className="rounded-2xl border border-slate-200/80 bg-white/80 backdrop-blur-sm p-5 shadow-sm hover:shadow-xl transition-all card-3d-lift dark:border-slate-800 dark:bg-slate-900/80 group">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <Award className="w-5 h-5" />
-            </div>
-            <h3 className="text-sm font-extrabold text-slate-900 dark:text-slate-100">Dream Policy</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
-              Configurable multi-offer & 1.5x multiplier compensation gates.
-            </p>
+            <Interactive3DFlipCard
+              frontBadge="Engine 3"
+              frontTitle="Interview Conflict Engine"
+              frontSubtitle="Intelligent time slot collision detector preventing student double-booking."
+              frontMetrics={[
+                { label: "Collision Rate", value: "0% Overlaps" },
+                { label: "Resolution", value: "Auto-Detected" },
+              ]}
+              backTitle="Slot Conflict Detection"
+              backDescription="Scans company drive schedules and individual interview sessions across all panels."
+              backPoints={[
+                "Detects time slot collisions with 15-min buffers",
+                "Visual red warning badge with conflicting interview title",
+                "Prevents simultaneous student scheduling",
+              ]}
+            />
+
+            <Interactive3DFlipCard
+              frontBadge="Engine 4"
+              frontTitle="Multiple-Offer Policy"
+              frontSubtitle="Institutional dream & super-dream tier compensation gate policies."
+              frontMetrics={[
+                { label: "Dream Multiplier", value: "1.5x CTC" },
+                { label: "Super Dream", value: "≥ ₹20 LPA" },
+              ]}
+              backTitle="Policy Enforcement"
+              backDescription="Governs campus offer acceptance rules ensuring fair distribution of job offers."
+              backPoints={[
+                "Prevents hoarding of multiple basic tier offers",
+                "Allows dream upgrades only if CTC exceeds 1.5x",
+                "Unrestricted applications for Super Dream tier (₹20L+)",
+              ]}
+            />
           </div>
         </div>
 
