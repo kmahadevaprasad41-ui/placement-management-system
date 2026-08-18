@@ -1,4 +1,8 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getDatabase } from "firebase/database";
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 import { getAnalytics, isSupported, Analytics } from "firebase/analytics";
 
 // Your web app's Firebase configuration
@@ -12,10 +16,22 @@ export const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "G-4L5RRJLTNY",
 };
 
-// Initialize Firebase (singleton pattern for Next.js SSR/client)
+// Initialize Firebase App (singleton for Next.js)
 export const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
-// Initialize Analytics conditionally (only in browser environment)
+// Initialize Cloud Firestore Database
+export const db = getFirestore(app);
+
+// Initialize Firebase Realtime Database
+export const rtdb = getDatabase(app);
+
+// Initialize Firebase Auth
+export const auth = getAuth(app);
+
+// Initialize Firebase Storage
+export const storage = getStorage(app);
+
+// Initialize Firebase Analytics conditionally in browser
 export let analytics: Analytics | null = null;
 
 if (typeof window !== "undefined") {

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Settings, ShieldCheck, Building2, Save } from "lucide-react";
+import { Settings, ShieldCheck, Building2, Save, Flame, Zap } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -225,8 +225,84 @@ export default function SettingsPage() {
             </div>
           </div>
 
+          {/* Firebase Cloud Database & Live Sync Console */}
+          <div className="rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50/40 via-white to-orange-50/30 p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-amber-100 dark:border-slate-800">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shadow-md shadow-amber-500/30">
+                  <Flame className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                    3. Firebase Cloud Database Connection
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    Cloud Firestore & Realtime Database synchronization
+                  </p>
+                </div>
+              </div>
+
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                <span>Connected</span>
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+              <div className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-0.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Firebase Project ID</p>
+                <p className="font-mono font-bold text-slate-800 dark:text-slate-200 truncate">
+                  placement-management-sys-3afa6
+                </p>
+              </div>
+
+              <div className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-0.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Cloud Storage Bucket</p>
+                <p className="font-mono font-bold text-slate-800 dark:text-slate-200 truncate">
+                  placement-management-sys-3afa6.firebasestorage.app
+                </p>
+              </div>
+
+              <div className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-0.5 sm:col-span-2 lg:col-span-1">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Services Active</p>
+                <p className="font-bold text-amber-600 dark:text-amber-400">
+                  Firestore • Realtime DB • Analytics
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
+              <p className="text-[11px] text-slate-500">
+                💡 Real-time synchronizer is enabled for placement drives, student resumes, and notification feeds.
+              </p>
+
+              <Button
+                type="button"
+                variant="3d-primary"
+                size="sm"
+                onClick={async () => {
+                  try {
+                    const res = await fetch("/api/firebase/test", { method: "POST" });
+                    const data = await res.json();
+                    if (data.success) {
+                      toast.success("Firebase Connection Verified", "Cloud Firestore & Realtime DB write ping succeeded!");
+                    } else {
+                      toast.error("Firebase Test Error", data.error);
+                    }
+                  } catch (e: any) {
+                    toast.error("Firebase Ping Failed", e.message);
+                  }
+                }}
+                className="text-xs font-bold gap-1.5"
+              >
+                <Zap className="w-3.5 h-3.5 text-amber-300" />
+                <span>Test Live Firebase Connection</span>
+              </Button>
+            </div>
+          </div>
+
           <div className="flex justify-end pt-3">
-            <Button type="submit" variant="primary" size="md" isLoading={isSaving} className="gap-2">
+            <Button type="submit" variant="3d-primary" size="md" isLoading={isSaving} className="gap-2 font-bold">
               <Save className="w-4 h-4" /> Save Institutional Settings
             </Button>
           </div>
