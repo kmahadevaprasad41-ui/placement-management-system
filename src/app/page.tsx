@@ -145,7 +145,7 @@ export default function LandingPage() {
                 <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
               </h1>
               <p className="text-[11px] text-slate-500 dark:text-slate-400 font-semibold">
-                Enterprise Career & Recruitment SaaS
+                Enterprise Career & Recruitment Platform
               </p>
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function LandingPage() {
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-950 dark:text-white leading-[1.1]">
             Complete Placement Lifecycle{" "}
             <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Management SaaS
+              Management System
             </span>
           </h2>
 

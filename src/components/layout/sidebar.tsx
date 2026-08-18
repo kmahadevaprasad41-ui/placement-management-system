@@ -183,7 +183,7 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
                 Placement Portal
               </h1>
               <p className="text-[10px] text-blue-600 font-bold uppercase tracking-wider">
-                Enterprise SaaS
+                Enterprise Portal
               </p>
             </div>
           </div>

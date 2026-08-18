@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Placement Management System | Campus SaaS",
+  title: "Placement Management System | Campus Portal",
   description: "Enterprise campus recruitment, eligibility evaluation, and offer management platform.",
 };
 
