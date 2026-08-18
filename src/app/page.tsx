@@ -181,10 +181,9 @@ export default function LandingPage() {
             <span>Campus Recruitment & Placement Platform 2026-27</span>
           </div>
 
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-950 dark:text-white leading-[1.1] text-glow-blue">
-            Complete Placement Lifecycle{" "}
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-glow-blue">
             <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Management System
+              Placement Management System
             </span>
           </h2>
 
