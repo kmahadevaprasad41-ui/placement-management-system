@@ -23,6 +23,11 @@ import {
   ShieldCheck,
   ChevronRight,
   ClipboardList,
+  Sparkles,
+  BrainCircuit,
+  Trophy,
+  Calculator,
+  Radio,
 } from "lucide-react";
 import { Role, SessionUser } from "@/types";
 import { cn } from "@/lib/utils";
@@ -53,7 +58,44 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
       roles: ["SUPER_ADMIN", "PLACEMENT_OFFICER", "DEPARTMENT_COORDINATOR", "STUDENT", "RECRUITER", "MANAGEMENT"],
     },
 
-    // 2. Student Self-Service
+    // 2. AI Intelligence & Career Suite
+    {
+      title: "AI Resume Analyzer",
+      href: "/resume-ai",
+      icon: Sparkles,
+      roles: ["SUPER_ADMIN", "PLACEMENT_OFFICER", "STUDENT", "DEPARTMENT_COORDINATOR"],
+      badge: "AI",
+    },
+    {
+      title: "AI Mock Interview",
+      href: "/interviews/mock-ai",
+      icon: BrainCircuit,
+      roles: ["SUPER_ADMIN", "PLACEMENT_OFFICER", "STUDENT", "DEPARTMENT_COORDINATOR"],
+      badge: "Live",
+    },
+    {
+      title: "Achievers Hall of Fame",
+      href: "/hall-of-fame",
+      icon: Trophy,
+      roles: ["SUPER_ADMIN", "PLACEMENT_OFFICER", "DEPARTMENT_COORDINATOR", "STUDENT", "RECRUITER", "MANAGEMENT"],
+      badge: "Top",
+    },
+    {
+      title: "Salary & CTC Calculator",
+      href: "/salary-insights",
+      icon: Calculator,
+      roles: ["SUPER_ADMIN", "PLACEMENT_OFFICER", "DEPARTMENT_COORDINATOR", "STUDENT", "RECRUITER", "MANAGEMENT"],
+      badge: "New",
+    },
+    {
+      title: "Drive Live Radar",
+      href: "/drives/radar",
+      icon: Radio,
+      roles: ["SUPER_ADMIN", "PLACEMENT_OFFICER", "RECRUITER", "STUDENT", "DEPARTMENT_COORDINATOR"],
+      badge: "Radar",
+    },
+
+    // 3. Student Self-Service
     {
       title: "My Profile",
       href: "/students/me",
@@ -67,7 +109,7 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
       roles: ["STUDENT"],
     },
 
-    // 3. Operational & Directory
+    // 4. Operational & Directory
     {
       title: "Students Directory",
       href: "/students",
@@ -87,7 +129,7 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
       roles: ["SUPER_ADMIN", "PLACEMENT_OFFICER", "DEPARTMENT_COORDINATOR", "STUDENT", "RECRUITER", "MANAGEMENT"],
     },
 
-    // 4. Recruitment Workflow
+    // 5. Recruitment Workflow
     {
       title: "Applications (Kanban)",
       href: "/applications",
@@ -120,7 +162,7 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
       roles: ["SUPER_ADMIN", "PLACEMENT_OFFICER", "STUDENT", "RECRUITER", "MANAGEMENT"],
     },
 
-    // 5. Intelligence & Governance
+    // 6. Intelligence & Governance
     {
       title: "Placement Analytics",
       href: "/analytics",

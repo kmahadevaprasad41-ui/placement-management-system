@@ -11,6 +11,7 @@ interface ModalProps {
   description?: string;
   children: React.ReactNode;
   maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl";
 }
 
 export function Modal({
@@ -19,8 +20,10 @@ export function Modal({
   title,
   description,
   children,
-  maxWidth = "lg",
+  maxWidth,
+  size = "lg",
 }: ModalProps) {
+  const effectiveSize = maxWidth || size;
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -59,7 +62,7 @@ export function Modal({
       <div
         className={cn(
           "relative z-50 w-full rounded-2xl bg-white p-6 shadow-2xl transition-all dark:bg-slate-900 border border-slate-200 dark:border-slate-800 max-h-[90vh] flex flex-col",
-          maxWidths[maxWidth]
+          maxWidths[effectiveSize]
         )}
       >
         {/* Header */}

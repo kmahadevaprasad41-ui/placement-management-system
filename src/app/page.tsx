@@ -296,6 +296,146 @@ export default function LandingPage() {
           </div>
         </div>
 
+        {/* Next-Gen Interactive Career Intelligence Suite */}
+        <div className="space-y-6 pt-4">
+          <div className="text-center space-y-1">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-purple-50 border border-purple-200 text-purple-800 dark:bg-purple-950/60 dark:border-purple-900 dark:text-purple-300">
+              <Sparkles className="w-3.5 h-3.5 text-purple-600 animate-spin" style={{ animationDuration: "5s" }} />
+              <span>Next-Gen Placement Superpowers</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+              AI Tools & Career Intelligence Suite
+            </h2>
+            <p className="text-xs text-slate-500 max-w-xl mx-auto">
+              Empowering students with AI-driven ATS resume scanning, live mock interview coaching, salary take-home calculators, and live drive radars.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {/* Tool 1: AI Resume Analyzer */}
+            <Link href="/resume-ai" className="block group">
+              <div className="p-6 rounded-3xl border border-blue-200 bg-gradient-to-br from-blue-50/60 via-white to-indigo-50/30 dark:bg-slate-900 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all card-3d-lift h-full flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform">
+                      <Sparkles className="w-6 h-6" />
+                    </div>
+                    <Badge variant="blue" size="sm">ATS Scanner</Badge>
+                  </div>
+                  <h3 className="text-base font-extrabold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 transition-colors">
+                    AI Resume Analyzer
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+                    Scan resumes against live job criteria, detect keyword gaps, and generate quantified bullet points.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-blue-600">
+                  <span>Launch ATS Scanner</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Link>
+
+            {/* Tool 2: AI Mock Interview */}
+            <Link href="/interviews/mock-ai" className="block group">
+              <div className="p-6 rounded-3xl border border-purple-200 bg-gradient-to-br from-purple-50/60 via-white to-pink-50/30 dark:bg-slate-900 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all card-3d-lift h-full flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-2xl bg-purple-600 text-white flex items-center justify-center shadow-lg shadow-purple-500/25 group-hover:scale-110 transition-transform">
+                      <Zap className="w-6 h-6" />
+                    </div>
+                    <Badge variant="purple" size="sm">Live AI Room</Badge>
+                  </div>
+                  <h3 className="text-base font-extrabold text-slate-900 dark:text-slate-100 group-hover:text-purple-600 transition-colors">
+                    AI Mock Interview Simulator
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+                    Practice company-specific tracks with an AI interviewer persona, speech input, and instant scorecards.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-purple-600">
+                  <span>Start Mock Session</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Link>
+
+            {/* Tool 3: Achievers Hall of Fame */}
+            <Link href="/hall-of-fame" className="block group">
+              <div className="p-6 rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-50/60 via-white to-orange-50/30 dark:bg-slate-900 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all card-3d-lift h-full flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-lg shadow-amber-500/25 group-hover:scale-110 transition-transform">
+                      <Award className="w-6 h-6" />
+                    </div>
+                    <Badge variant="amber" size="sm">₹32.5L Peak</Badge>
+                  </div>
+                  <h3 className="text-base font-extrabold text-slate-900 dark:text-slate-100 group-hover:text-amber-600 transition-colors">
+                    Achievers Hall of Fame
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+                    Explore top placed students, holographic offer showcases, and verified interview strategies.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-amber-600">
+                  <span>View Hall of Fame</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Link>
+
+            {/* Tool 4: Salary Calculator */}
+            <Link href="/salary-insights" className="block group">
+              <div className="p-6 rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50/60 via-white to-teal-50/30 dark:bg-slate-900 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all card-3d-lift h-full flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-500/25 group-hover:scale-110 transition-transform">
+                      <TrendingUp className="w-6 h-6" />
+                    </div>
+                    <Badge variant="emerald" size="sm">Tax & In-Hand</Badge>
+                  </div>
+                  <h3 className="text-base font-extrabold text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 transition-colors">
+                    Salary & In-Hand Calculator
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+                    Interactive CTC vs Take-Home pay explorer with base/bonus splits, PF, and tax estimations.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-emerald-600">
+                  <span>Calculate In-Hand Pay</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Link>
+
+            {/* Tool 5: Drive Radar */}
+            <Link href="/drives/radar" className="block group sm:col-span-2 lg:col-span-2">
+              <div className="p-6 rounded-3xl border border-indigo-200 bg-gradient-to-br from-indigo-50/60 via-white to-blue-50/30 dark:bg-slate-900 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all card-3d-lift h-full flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-500/25 group-hover:scale-110 transition-transform">
+                      <Layers className="w-6 h-6" />
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300">
+                      <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping" /> Live Stepper
+                    </span>
+                  </div>
+                  <h3 className="text-base font-extrabold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 transition-colors">
+                    Drive Live Radar & Countdown Stepper
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+                    Track stage-by-stage hiring pipelines in real time with countdown clocks and one-click calendar sync.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-indigo-600">
+                  <span>Open Live Drive Radar</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+
         {/* 1-Click Interactive 3D Role Test Cards */}
         <div className="space-y-6 pt-6">
           <div className="text-center space-y-1">
