@@ -181,7 +181,7 @@ export default function LandingPage() {
             <span>Campus Recruitment & Placement Platform 2026-27</span>
           </div>
 
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-950 dark:text-white leading-[1.1]">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-950 dark:text-white leading-[1.1] text-glow-blue">
             Complete Placement Lifecycle{" "}
             <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
               Management System
@@ -215,6 +215,26 @@ export default function LandingPage() {
               <GraduationCap className="w-4 h-4 animate-bounce" style={{ animationDuration: "3s" }} />
               <span>Explore as Student (32.5L Offer)</span>
             </Button>
+          </div>
+
+          {/* Glowing Metrics Quick Pill Bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 max-w-3xl mx-auto">
+            <div className="p-3.5 rounded-2xl glass-panel-pro text-center space-y-0.5 card-3d-lift">
+              <p className="text-xl font-black text-blue-600 dark:text-blue-400">52 Active</p>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Candidate Profiles</p>
+            </div>
+            <div className="p-3.5 rounded-2xl glass-panel-pro text-center space-y-0.5 card-3d-lift">
+              <p className="text-xl font-black text-purple-600 dark:text-purple-400">8 Tier-1/2</p>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Hiring Partners</p>
+            </div>
+            <div className="p-3.5 rounded-2xl glass-panel-pro text-center space-y-0.5 card-3d-lift">
+              <p className="text-xl font-black text-emerald-600 dark:text-emerald-400">₹32.5 LPA</p>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Peak Offer (Google)</p>
+            </div>
+            <div className="p-3.5 rounded-2xl glass-panel-pro text-center space-y-0.5 card-3d-lift">
+              <p className="text-xl font-black text-amber-600 dark:text-amber-400">100% Zero</p>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Double-Booking</p>
+            </div>
           </div>
         </div>
 

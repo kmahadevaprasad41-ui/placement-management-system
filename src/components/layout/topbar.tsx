@@ -73,7 +73,7 @@ export function Topbar({ user, onOpenSidebar, onOpenSearch, onOpenNotifications,
   };
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-slate-200/80 bg-white/85 px-4 sm:px-6 backdrop-blur-md dark:border-slate-800/80 dark:bg-slate-900/85">
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-slate-200/80 bg-white/80 px-4 sm:px-6 backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-900/80 shadow-sm">
       {/* Left: Mobile Menu Trigger & Search Input Bar */}
       <div className="flex items-center gap-2 sm:gap-3 w-72 sm:w-96">
         {onOpenSidebar && (
@@ -87,13 +87,13 @@ export function Topbar({ user, onOpenSidebar, onOpenSearch, onOpenNotifications,
         )}
         <button
           onClick={onOpenSearch || (() => {})}
-          className="flex items-center justify-between w-full h-9 px-3 text-xs text-slate-400 bg-slate-100 hover:bg-slate-200/80 rounded-xl border border-slate-200 transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400"
+          className="flex items-center justify-between w-full h-9 px-3.5 text-xs text-slate-400 bg-slate-100/90 hover:bg-slate-200/90 hover:text-slate-700 rounded-xl border border-slate-200/90 transition-all dark:bg-slate-800/90 dark:border-slate-700 dark:text-slate-400 group"
         >
           <div className="flex items-center gap-2">
-            <Search className="w-3.5 h-3.5" />
+            <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-600 transition-colors" />
             <span>Search students, jobs, drives...</span>
           </div>
-          <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-white dark:bg-slate-900 rounded border border-slate-300 dark:border-slate-600">
+          <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-white dark:bg-slate-900 rounded border border-slate-300 dark:border-slate-600 text-slate-500 shadow-xs">
             Ctrl+K
           </kbd>
         </button>
